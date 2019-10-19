@@ -16,6 +16,7 @@ public:
     void executeCommand(Command cmd) override;
     TCellMatrix& getCellGrid() override;
     void movePointer(const Vector2& pos) override;
+    void processGameState(GameState state) override;
 private:
     IMap* _map;
     TCellMatrix* _array;

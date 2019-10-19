@@ -23,6 +23,7 @@ private:
     TOpenCallback* _openCell;
     IGameViewModel* _viewModel;
     bool _exit;
+    Vector2 cursorPos;
 private:
     termios _terminalSettings;
     void input_on();

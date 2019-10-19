@@ -46,3 +46,6 @@ CellInfo GameViewModel::getCellInfo(const Coordinate& coord) const {
 
 void GameViewModel::movePointer(const Vector2& pos) {
 }
+
+void GameViewModel::processGameState(GameState state) {
+}
