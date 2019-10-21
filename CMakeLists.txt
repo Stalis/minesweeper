@@ -3,20 +3,13 @@ project(minesweeper)
 
 set(CMAKE_CXX_STANDARD 14)
 
-#add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
-#add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
-
 if (MSVC)
     set(CMAKE_CXX_FLAGS_DEBUG "/Wall /Od /utf-8 /Zi")
-else()
+else ()
     set(CMAKE_CXX_FLAGS_DEBUG "--debug -Wall -Wpedantic")
-endif()
+endif ()
 
-set(CURSES_LIB "")
-set(CURSES_INCLUDE "")
-
-
-add_executable(minesweeper main.cpp
+set(SOURCES
         src/Map/Cell.hpp
         src/Map/Map.hpp src/Map/Map.cpp
         src/Map/Coordinate.hpp
@@ -31,23 +24,31 @@ add_executable(minesweeper main.cpp
         src/ViewModel/GameViewModel.cpp src/ViewModel/GameViewModel.hpp
         src/ViewModel/IGameViewModel.hpp
         src/Vector2.hpp
-        src/GameState.hpp 
-	src/Utils.hpp
-	src/View/CursesGameView.cpp src/View/CursesGameView.hpp)
+        src/GameState.hpp
+        src/Utils.hpp)
+
+if (WITH_CURSES)
+    set(SOURCES ${SOURCES} src/View/CursesGameView.cpp src/View/CursesGameView.hpp)
+endif ()
+
+add_executable(minesweeper main.cpp ${SOURCES})
 
 target_include_directories(minesweeper PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-#======= INCLUDING CURSES ========#
 
-if (WIN32 OR MSVC)
-    add_subdirectory(lib)
-    target_include_directories(minesweeper PRIVATE lib/PDCurses)
-    target_link_libraries(minesweeper PRIVATE PDCurses)
-else ()
-    set(CURSES_NEED_NCURSES TRUE)
-    find_package(Curses)
-    if (CURSES_FOUND)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CURSES_CFLAGS}")
-        target_include_directories(minesweeper PRIVATE ${CURSES_INCLUDE_DIRS})
-        target_link_libraries(minesweeper ${CURSES_LIBRARIES})
+if (WITH_CURSES)
+    #======= INCLUDING CURSES ========#
+
+    if (WIN32 OR MSVC)
+        add_subdirectory(lib)
+        target_include_directories(minesweeper PRIVATE lib/PDCurses)
+        target_link_libraries(minesweeper PRIVATE PDCurses)
+    else ()
+        set(CURSES_NEED_NCURSES TRUE)
+        find_package(Curses)
+        if (CURSES_FOUND)
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CURSES_CFLAGS}")
+            target_include_directories(minesweeper PRIVATE ${CURSES_INCLUDE_DIRS})
+            target_link_libraries(minesweeper ${CURSES_LIBRARIES})
+        endif ()
     endif ()
 endif ()

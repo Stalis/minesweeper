@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <sstream>
 
 #include "src/Utils.hpp"
 
@@ -81,13 +82,10 @@ static char getCellChar(const CellInfo& info)
 static Command parseInput(const std::string& input)
 {
 	std::vector<std::string> words{};
-	for (auto& it = input.begin(); it < input.end(); it++)
-	{
-		std::string word{};
-		for (; *it != ' ' && it < input.end(); it++)
-			word.push_back(*it);
-
-		words.push_back(std::string(word));
+    std::stringstream stream(input);
+    std::string word;
+    while (std::getline(stream, word, ' ')) {
+        words.push_back(word);
 	}
 
 	for (auto& word : words)
@@ -107,7 +105,7 @@ static Command parseInput(const std::string& input)
 		return Command::Open(x, y);
 	}
 
-	std::cin >> std::string{};
+    std::cin.get();
 	return Command::INVALID;
 }
 

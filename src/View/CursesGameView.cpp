@@ -3,7 +3,7 @@
 //
 
 #include "CursesGameView.hpp"
-#include <exception>
+#include <stdexcept>
 #include <curses.h>
 
 struct CursesGameView::CursesWindow
@@ -40,9 +40,9 @@ struct CursesGameView::CursesWindow
 	}
 };
 
-class TerminalNotSupportColorsException : public std::exception {
+class TerminalNotSupportColorsException : public std::runtime_error {
 public:
-	TerminalNotSupportColorsException() : std::exception("Your terminal doesn't support colors") {}
+    TerminalNotSupportColorsException() : std::runtime_error("Your terminal doesn't support colors") {}
 };
 
 CursesGameView::CursesGameView(IGameViewModel * viewModel)
