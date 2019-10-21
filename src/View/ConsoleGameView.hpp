@@ -7,8 +7,6 @@
 #include "IGameView.hpp"
 #include "../Map/Coordinate.hpp"
 #include "../ViewModel/IGameViewModel.hpp"
-#include <termios.h>
-#include <unistd.h>
 
 class ConsoleGameView : public IGameView {
 public:
@@ -25,7 +23,6 @@ private:
     bool _exit;
     Vector2 cursorPos;
 private:
-    termios _terminalSettings;
     void input_on();
     void input_off();
 };

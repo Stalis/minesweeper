@@ -2,7 +2,15 @@ cmake_minimum_required(VERSION 3.12)
 project(minesweeper)
 
 set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS_DEBUG "--debug -Wall -Wpedantic")
+
+#add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
+#add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+
+if (MSVC)
+    set(CMAKE_CXX_FLAGS_DEBUG "/Wall /Od /utf-8 /Zi")
+else()
+    set(CMAKE_CXX_FLAGS_DEBUG "--debug -Wall -Wpedantic")
+endif()
 
 set(CURSES_LIB "")
 set(CURSES_INCLUDE "")

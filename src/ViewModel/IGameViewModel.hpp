@@ -5,6 +5,7 @@
 #pragma once
 
 #include <map>
+#include <vector>
 #include "CellInfo.hpp"
 #include "../Vector2.hpp"
 #include "../Command.hpp"
