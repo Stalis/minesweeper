@@ -49,15 +49,21 @@ void ConsoleGameView::draw()
 	std::cout << "> " << std::flush;
 }
 
-void ConsoleGameView::setCommandCallback(IGameView::TCommandCallback* callback)
-{}
+void ConsoleGameView::setCommandCallback(IGameView::TCommandCallback* callback) {
+    if (nullptr != callback) {
+        _commandCallback = callback;
+    }
+}
 
 Command ConsoleGameView::waitInput()
 {
 	std::string input{};
 	std::getline(std::cin, input);
-
-	return parseInput(input);
+    auto cmd = parseInput(input);
+    if (nullptr != _commandCallback) {
+        (*_commandCallback)(cmd);
+    }
+    return cmd;
 }
 
 static char getCellChar(const CellInfo& info)

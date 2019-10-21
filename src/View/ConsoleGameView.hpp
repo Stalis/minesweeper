@@ -18,13 +18,8 @@ public:
     Command waitInput() override;
 private:
     std::map<Coordinate, char> _gridView;
-    TCommandCallback* _openCell;
+    TCommandCallback* _commandCallback;
     IGameViewModel* _viewModel;
-    bool _exit;
-    Vector2 cursorPos;
-private:
-    void input_on();
-    void input_off();
 };
 
 
