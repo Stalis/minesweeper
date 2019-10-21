@@ -5,6 +5,9 @@
 #include "ConsoleGameView.hpp"
 #include <iostream>
 #include <vector>
+#include <string>
+
+#include "../Utils.hpp"
 
 static const char ClosedCell = '#';
 static const char MineCell = '*';
@@ -14,12 +17,10 @@ static char getCellChar(const CellInfo& info);
 
 ConsoleGameView::ConsoleGameView(IGameViewModel* viewModel)
     : _gridView(std::map<Coordinate, char>{}), _viewModel(viewModel) {
-
-//    input_on();
 }
 
 void ConsoleGameView::draw() {
-    std::system("clear");
+	Utils::clear_screen();
 
     auto& grid = _viewModel->getCellGrid();
     for (auto& row : grid) {
