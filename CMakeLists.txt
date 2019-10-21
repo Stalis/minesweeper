@@ -26,13 +26,16 @@ add_executable(minesweeper main.cpp
         src/Map/IMap.hpp
         src/Map/IMapFactory.cpp
         src/Map/IMapFactory.hpp
-        src/Command.hpp
+        src/Command.hpp src/Command.cpp
         src/ViewModel/CellInfo.hpp
         src/ViewModel/GameViewModel.cpp src/ViewModel/GameViewModel.hpp
         src/ViewModel/IGameViewModel.hpp
         src/Vector2.hpp
-        src/GameState.hpp src/View/CursesGameView.cpp src/View/CursesGameView.hpp)
+        src/GameState.hpp 
+	src/Utils.hpp
+	src/View/CursesGameView.cpp src/View/CursesGameView.hpp)
 
+target_include_directories(minesweeper PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 #======= INCLUDING CURSES ========#
 
 if (WIN32 OR MSVC)

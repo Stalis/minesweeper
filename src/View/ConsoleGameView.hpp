@@ -5,8 +5,8 @@
 #pragma once
 #include <map>
 #include "IGameView.hpp"
-#include "../Map/Coordinate.hpp"
-#include "../ViewModel/IGameViewModel.hpp"
+#include "src/Map/Coordinate.hpp"
+#include "src/ViewModel/IGameViewModel.hpp"
 
 class ConsoleGameView : public IGameView {
 public:
@@ -14,11 +14,11 @@ public:
     ~ConsoleGameView() override = default;
 
     void draw() override;
-    void exit();
-    void setOpenCallback(TOpenCallback* callback) override;
+    void setCommandCallback(TCommandCallback* callback) override;
+    Command waitInput() override;
 private:
     std::map<Coordinate, char> _gridView;
-    TOpenCallback* _openCell;
+    TCommandCallback* _openCell;
     IGameViewModel* _viewModel;
     bool _exit;
     Vector2 cursorPos;

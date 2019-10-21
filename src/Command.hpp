@@ -4,11 +4,20 @@
 
 #pragma once
 
-enum class Command {
-    MOVE_LEFT,
-    MOVE_RIGHT,
-    MOVE_UP,
-    MOVE_DOWN,
-    OPEN,
-    EXIT,
+enum class CommandType
+{
+	OPEN,
+	EXIT,
+	INVALID,
+};
+
+struct Command
+{
+	CommandType type;
+	int x;
+	int y;
+
+	static Command EXIT;
+	static Command INVALID;
+	static Command Open(int x, int y);
 };

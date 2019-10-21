@@ -19,6 +19,11 @@ Game::Game(const GameSettings& settings)
     _view = new ConsoleGameView(_viewModel);
 }
 
+void Game::init()
+{
+	draw();
+}
+
 void Game::update() {
     processInput();
     draw();
@@ -30,6 +35,12 @@ bool Game::isExitState() const {
 
 void Game::processInput() const {
     std::this_thread::sleep_for(std::chrono::nanoseconds(1000000));
+	auto cmd = _view->waitInput();
+	if (cmd.type == CommandType::EXIT)
+	{
+		_state = GameState::EXIT;
+	}
+	_viewModel->executeCommand(cmd);
 }
 
 void Game::draw() const {

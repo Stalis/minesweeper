@@ -9,7 +9,7 @@
 #include "Map.hpp"
 
 Map::Map(int width, int height)
-    : _cells(std::map<Coordinate, Cell>{}) {}
+    : _cells(std::map<Coordinate, Cell>{}), _width(width), _height(height) {}
 
 bool Map::isMine(const Coordinate& cell) const {
     auto* c = getCell(cell);

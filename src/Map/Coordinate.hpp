@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "../Vector2.hpp"
+#include "src/Vector2.hpp"
 
 class Coordinate : public Vector2 {
 public:

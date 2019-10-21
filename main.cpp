@@ -3,6 +3,7 @@
 int main() {
     Game game{};
 
+	game.init();
     for (;;) {
         game.update();
         if (game.isExitState())

@@ -4,7 +4,8 @@
 
 #pragma once
 
-#include "../Map/Coordinate.hpp"
+#include "src/Vector2.hpp"
+#include "src/Command.hpp"
 #include <functional>
 
 enum class CellMode {
@@ -15,10 +16,11 @@ enum class CellMode {
 
 class IGameView {
 public:
-    using TOpenCallback = std::function<void (Vector2)>;
+    using TCommandCallback = std::function<void (Command)>;
 public:
     virtual ~IGameView() = default;
 
     virtual void draw() = 0;
-    virtual void setOpenCallback(TOpenCallback* callback) = 0;
+    virtual void setCommandCallback(TCommandCallback* callback) = 0;
+	virtual Command waitInput() = 0;
 };

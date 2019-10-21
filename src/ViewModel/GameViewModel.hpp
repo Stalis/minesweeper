@@ -4,13 +4,13 @@
 
 #pragma once
 
-#include "../Command.hpp"
+#include "src/Command.hpp"
 #include "IGameViewModel.hpp"
-#include "../Map/IMap.hpp"
+#include "src/Map/IMap.hpp"
 
 class GameViewModel : public IGameViewModel {
 public:
-    GameViewModel(IMap* map) : _map(map) {}
+	GameViewModel(IMap* map) : _map(map), _array(new TCellMatrix{}) {}
     ~GameViewModel() override = default;
 
     void executeCommand(Command cmd) override;
@@ -21,6 +21,7 @@ private:
     IMap* _map;
     TCellMatrix* _array;
     CellInfo getCellInfo(const Coordinate& coord) const;
+	void openCell(int x, int y);
 };
 
 

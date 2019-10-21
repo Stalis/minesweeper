@@ -5,26 +5,34 @@
 #include "GameViewModel.hpp"
 
 void GameViewModel::executeCommand(Command cmd) {
+	if (cmd.type == CommandType::OPEN)
+	{
+		openCell(cmd.x, cmd.y);
+	}
 }
 
 IGameViewModel::TCellMatrix& GameViewModel::getCellGrid() {
+	if (nullptr != _array)
+	{
+		return *_array;
+	}
+
     int width = _map->getWidth();
     int height = _map->getHeight();
 
     auto* res = new TCellMatrix();
-    res->reserve(height);
+    //res->reserve(height);
 
     for (int y = 0; y < height; y++) {
-        TCellRow row{width};
+        TCellRow row{};
         for (int x = 0; x < width; x++) {
             row.push_back(getCellInfo(Coordinate{x, y}));
         }
         res->push_back(row);
     }
-
-    auto* buf = _array;
-    _array = res;
-    delete buf;
+	_array->resize(res->size());
+	std::copy(res->begin(), res->end(), _array->begin());
+	delete res;
     return *_array;
 }
 
@@ -42,6 +50,17 @@ CellInfo GameViewModel::getCellInfo(const Coordinate& coord) const {
     }
 
     return CellInfo(count);
+}
+
+void GameViewModel::openCell(int x, int y)
+{
+	auto& info = _array->at(y).at(x);
+	bool isMine = false;
+	info.open(isMine);
+	if (isMine)
+	{
+
+	}
 }
 
 void GameViewModel::movePointer(const Vector2& pos) {

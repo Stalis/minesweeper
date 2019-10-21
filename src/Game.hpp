@@ -18,6 +18,7 @@ class Game {
 public:
     Game();
     explicit Game(const GameSettings&);
+	void init();
     void update();
     bool isExitState() const;
     ~Game();
@@ -26,7 +27,7 @@ private:
     IGameViewModel* _viewModel;
     IMap* _map;
     GameSettings _settings;
-    GameState _state;
+    mutable GameState _state;
     void processInput() const;
     void draw() const;
 };

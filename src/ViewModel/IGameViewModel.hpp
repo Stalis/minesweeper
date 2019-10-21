@@ -7,9 +7,9 @@
 #include <map>
 #include <vector>
 #include "CellInfo.hpp"
-#include "../Vector2.hpp"
-#include "../Command.hpp"
-#include "../GameState.hpp"
+#include "src/Vector2.hpp"
+#include "src/Command.hpp"
+#include "src/GameState.hpp"
 
 class IGameViewModel {
 public:
