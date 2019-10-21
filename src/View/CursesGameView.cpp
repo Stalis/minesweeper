@@ -40,11 +40,6 @@ struct CursesGameView::CursesWindow
 	}
 };
 
-class TerminalNotSupportColorsException : public std::runtime_error {
-public:
-    TerminalNotSupportColorsException() : std::runtime_error("Your terminal doesn't support colors") {}
-};
-
 CursesGameView::CursesGameView(IGameViewModel * viewModel)
 	: _viewModel(viewModel)
 {
@@ -55,10 +50,10 @@ CursesGameView::CursesGameView(IGameViewModel * viewModel)
 	noecho();
 	curs_set(0);
 	keypad(stdscr, true);
-	if (has_colors() == false)
+    if (!has_colors())
 	{
 		endwin();
-		throw TerminalNotSupportColorsException{};
+        throw std::runtime_error("Your terminal doesn't support colors")
 	}
 	start_color();
 	use_default_colors();

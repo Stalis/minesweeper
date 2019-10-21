@@ -10,7 +10,7 @@
 
 class GameViewModel : public IGameViewModel {
 public:
-	GameViewModel(IMap* map) : _map(map), _array(new TCellMatrix{}) {}
+    GameViewModel(IMap* map) : _map(map) {}
     ~GameViewModel() override = default;
 
     void executeCommand(Command cmd) override;
@@ -20,6 +20,7 @@ public:
 private:
     IMap* _map;
     TCellMatrix* _array;
+    void initCellGrid();
     CellInfo getCellInfo(const Coordinate& coord) const;
 	void openCell(int x, int y);
 };

@@ -11,7 +11,7 @@ static const int RANDOM_MAX = 0x7fffffff;
 static const int DEFAULT_WIDTH = 10;
 static const int DEFAULT_HEIGHT = 10;
 
-static const int DEFAULT_RANDOM_WINDOW = static_cast<int>(static_cast<float>(RANDOM_MAX) * 0.95);
+static const int DEFAULT_RANDOM_WINDOW = static_cast<int>(static_cast<float>(RANDOM_MAX) * 0.75);
 
 class IMapFactory {
 public:

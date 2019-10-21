@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-
+#include <stdexcept>
 #include <string>
 #include <random>
 #include "IMapFactory.hpp"

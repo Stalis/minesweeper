@@ -15,6 +15,9 @@ static const char MineCell = '*';
 static const char EmptyCell = ' ';
 static const char Delimiter = ' ';
 
+static const std::string red("\033[0;31m");
+std::string reset("\033[0m");
+
 static char getCellChar(const CellInfo& info);
 static Command parseInput(const std::string& input);
 static void printHeader(int count);
@@ -30,14 +33,14 @@ void ConsoleGameView::draw()
 	Utils::clear_screen();
 
 	auto& grid = _viewModel->getCellGrid();
-	std::cout << Delimiter << Delimiter << std::flush;
+    std::cout << Delimiter << Delimiter << red << std::flush;
 	printHeader(grid.size());
-	std::cout << std::endl;
+    std::cout << reset << std::endl;
 
 	int counter = 1;
 	for (auto& row : grid)
 	{
-		std::cout << counter++ << Delimiter << std::flush;
+        std::cout << red << counter++ << reset << Delimiter << std::flush;
 
 		for (auto& item : row)
 		{
@@ -87,6 +90,9 @@ static char getCellChar(const CellInfo& info)
 
 static Command parseInput(const std::string& input)
 {
+    if (input.length() == 0) {
+        return Command::INVALID;
+    }
 	std::vector<std::string> words{};
     std::stringstream stream(input);
     std::string word;

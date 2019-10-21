@@ -12,33 +12,15 @@ void GameViewModel::executeCommand(Command cmd) {
 }
 
 IGameViewModel::TCellMatrix& GameViewModel::getCellGrid() {
-	if (nullptr != _array)
-	{
-		return *_array;
-	}
-
-    int width = _map->getWidth();
-    int height = _map->getHeight();
-
-    auto* res = new TCellMatrix();
-    //res->reserve(height);
-
-    for (int y = 0; y < height; y++) {
-        TCellRow row{};
-        for (int x = 0; x < width; x++) {
-            row.push_back(getCellInfo(Coordinate{x, y}));
-        }
-        res->push_back(row);
+    if (nullptr == _array) {
+        initCellGrid();
     }
-	_array->resize(res->size());
-	std::copy(res->begin(), res->end(), _array->begin());
-	delete res;
     return *_array;
 }
 
 CellInfo GameViewModel::getCellInfo(const Coordinate& coord) const {
     if (_map->isMine(coord)) {
-        return CellInfo(true);
+        return CellInfo{true};
     }
 
     auto neighbours = _map->getNeighbours(coord);
@@ -49,7 +31,23 @@ CellInfo GameViewModel::getCellInfo(const Coordinate& coord) const {
         }
     }
 
-    return CellInfo(count);
+    return CellInfo{count};
+}
+
+void GameViewModel::initCellGrid() {
+    int width = _map->getWidth();
+    int height = _map->getHeight();
+
+    auto* res = new TCellMatrix();
+
+    for (int y = 0; y < height; y++) {
+        TCellRow row{};
+        for (int x = 0; x < width; x++) {
+            row.push_back(getCellInfo(Coordinate{x, y}));
+        }
+        res->push_back(row);
+    }
+    _array = res;
 }
 
 void GameViewModel::openCell(int x, int y)

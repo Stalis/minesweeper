@@ -2,10 +2,6 @@
 // Created by Stanislav on 19/10/2019.
 //
 
-#include <string>
-#include <random>
-#include <iostream>
-
 #include "Map.hpp"
 
 Map::Map(int width, int height)
