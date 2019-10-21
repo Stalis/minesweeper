@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.12)
 project(PDCurses)
 
 file(GLOB SOURCES ./PDCurses/*.c ./PDCurses/common/*.c ./PDCurses/pdcurses/*.c ./PDCurses/wincon/*.c)
