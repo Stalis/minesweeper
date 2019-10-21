@@ -39,11 +39,11 @@ static char getCellChar(const CellInfo& info) {
     bool isMine = false;
     if (info.isOpened(isMine)) {
         if (!isMine) {
-            int near = info.nearMines();
-            if (0 == near) {
+            int nearMines = info.nearMines();
+            if (0 == nearMines) {
                 return EmptyCell;
             }
-            return std::to_string(near)[0];
+            return std::to_string(nearMines)[0];
         }
         return MineCell;
     }
