@@ -27,7 +27,6 @@ private:
     IMap* _map;
     GameSettings _settings;
     GameState _state;
-    bool _exit = false;
     void processInput() const;
     void draw() const;
 };

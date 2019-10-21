@@ -13,7 +13,7 @@ Game::Game()
     : Game(GameSettings{}){ }
 
 Game::Game(const GameSettings& settings)
-    : _settings(settings) {
+    : _settings(settings), _state(GameState::GAME) {
     _map = IMapFactory::CreateMap(_settings.mines, _settings.width, _settings.height);
     _viewModel = new GameViewModel(_map);
     _view = new ConsoleGameView(_viewModel);
@@ -25,7 +25,7 @@ void Game::update() {
 }
 
 bool Game::isExitState() const {
-    return _exit;
+    return _state == GameState::EXIT;
 }
 
 void Game::processInput() const {
