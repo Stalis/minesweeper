@@ -12,10 +12,13 @@
 
 static Command parseInput(const std::string& input);
 static void printHeader(int count, char delimiter);
-static int getColumnNumber(const std::string& name);
-static std::string getColumnName(int number);
+
+static bool readColumnNumber(const std::string& name, int& number);
+static bool readColumnName(int number, std::string& name);
 
 inline static const ConsoleGameViewSettings defaultSettings = ConsoleGameViewSettings{};
+
+static const std::string HeaderAlphabet = "abcdefghjklmnopqrstuvwxyz";
 
 ConsoleGameView::ConsoleGameView(IGameViewModel* viewModel)
     : ConsoleGameView(viewModel, defaultSettings) {}
@@ -149,38 +152,52 @@ static Command parseInput(const std::string& input)
 		return Command::EXIT;
 	}
 
+    int x = -1, y = -1;
 	if (words.at(0) == "open")
 	{
-		int x = getColumnNumber(words.at(1));
-		int y = std::stoi(words.at(2)) - 1;
-		return Command::Open(x, y);
+        if (readColumnNumber(words.at(1), x)) {
+            y = std::stoi(words.at(2)) - 1;
+            return Command::Open(x, y);
+        }
 	}
 
     if (words.at(0).length() == 1) {
-        int x = getColumnNumber(words.at(0));
-        int y = std::stoi(words.at(1)) - 1;
-        return Command::Open(x, y);
+        if (readColumnNumber(words.at(0), x)) {
+            y = std::stoi(words.at(1)) - 1;
+            return Command::Open(x, y);
+        }
+    }
+
+    if (words.at(0).length() == 2) {
+        if (readColumnNumber(words.at(0).substr(0, 1), x)) {
+            y = std::stoi(words.at(0).substr(1, 1)) - 1;
+            return Command::Open(x, y);
+        }
     }
 
     std::cin.get();
 	return Command::INVALID;
 }
 
-void printHeader(int count, char delimiter)
-{
+static void printHeader(int count, char delimiter) {
+    std::string columnName{};
 	for (int i = 0; i < count; i++)
 	{
-        std::cout << getColumnName(i) << delimiter << std::flush;
+        if (readColumnName(i, columnName)) {
+            std::cout << columnName << delimiter << std::flush;
+        }
 	}
 }
 
-static int getColumnNumber(const std::string& name)
-{
-	return name.at(0) - 'a';
+static bool readColumnNumber(const std::string& name, int& number) {
+    number = static_cast<int>(HeaderAlphabet.find_first_of(name.front(), 0));
+    return number != std::string::npos;
 }
 
-static std::string getColumnName(int number)
-{
-	char res = 'a' + number;
-	return std::string{ res };
+static bool readColumnName(int number, std::string& name) {
+    if (number < 0 || number > (HeaderAlphabet.length() - 1)) {
+        return false;
+    }
+    name = HeaderAlphabet.at(number);
+    return true;
 }

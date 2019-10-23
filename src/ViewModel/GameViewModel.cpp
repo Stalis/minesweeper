@@ -56,13 +56,17 @@ void GameViewModel::initCellGrid() {
 
 void GameViewModel::openCell(int x, int y)
 {
-	auto& info = _array->at(y).at(x);
-	bool isMine = false;
-	info.open(isMine);
-	if (isMine)
-	{
-        processGameState(GameState::LOSE);
-	}
+    if (x < 0 || y < 0)
+        return;
+
+    if (y < _array->size() && x < _array->at(y).size()) {
+        auto& info = _array->at(y).at(x);
+        bool isMine = false;
+        info.open(isMine);
+        if (isMine) {
+            processGameState(GameState::LOSE);
+        }
+    }
 }
 
 void GameViewModel::movePointer(const Vector2& pos) {
