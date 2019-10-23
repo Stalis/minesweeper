@@ -13,6 +13,7 @@ set(SOURCES
         src/Map/Cell.hpp
         src/Map/Map.hpp src/Map/Map.cpp
         src/Map/Coordinate.hpp
+        src/View/ConsoleColors.hpp
         src/View/ConsoleGameView.cpp src/View/ConsoleGameView.hpp
         src/View/IGameView.hpp
         src/Game.cpp src/Game.hpp
