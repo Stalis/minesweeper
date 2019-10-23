@@ -12,17 +12,17 @@
 #include "ConsoleColors.hpp"
 
 struct ConsoleGameViewSettings {
-    const char mineCell;
-    const char closedCell;
-    const char emptyCell;
-    const char delimiter;
-    const std::string& headerColor;
-    const std::string& rowNumberColor;
-    const std::string& mineColor;
-    const std::string& closedColor;
-    const std::string& neighbourColor;
-    const std::string& emptyColor;
-    const std::string& resetColor;
+    const char mineCell = '*';
+    const char closedCell = '#';
+    const char emptyCell = '.';
+    const char delimiter = ' ';
+    const std::string& headerColor = ConsoleColors::BrightYellow;
+    const std::string& rowNumberColor = headerColor;
+    const std::string& mineColor = ConsoleColors::Red;
+    const std::string& closedColor = ConsoleColors::BrightWhite;
+    const std::string& neighbourColor = ConsoleColors::Yellow;
+    const std::string& emptyColor = ConsoleColors::Reset;
+    const std::string& resetColor = ConsoleColors::Reset;
 };
 
 class ConsoleGameView : public IGameView {
