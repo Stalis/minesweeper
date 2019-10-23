@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 project(minesweeper)
 
+set(CMAKE_C_STANDARD c11)
 set(CMAKE_CXX_STANDARD 17)
 
 if (MSVC)
@@ -26,10 +27,11 @@ set(SOURCES
         src/ViewModel/IGameViewModel.hpp
         src/Vector2.hpp
         src/GameState.hpp
-        src/Utils.hpp)
+        src/Utils.hpp
+        )
 
 if (WITH_CURSES)
-    set(SOURCES ${SOURCES} src/View/CursesGameView.cpp src/View/CursesGameView.hpp src/View/ConsoleColors.hpp)
+    set(SOURCES ${SOURCES} src/View/CursesGameView.cpp src/View/CursesGameView.hpp src/View/ConsoleColors.hpp src/Presenter/IGamePresenter.hpp src/Model/GameModel.cpp src/Model/GameModel.hpp src/Presenter/GamePresenter.cpp src/Presenter/GamePresenter.hpp src/Model/IGameModel.hpp)
 endif ()
 
 add_executable(minesweeper main.cpp ${SOURCES})

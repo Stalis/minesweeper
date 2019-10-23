@@ -15,7 +15,19 @@ static void printHeader(int count, char delimiter);
 static int getColumnNumber(const std::string& name);
 static std::string getColumnName(int number);
 
-inline static const ConsoleGameViewSettings defaultSettings = ConsoleGameViewSettings{};
+inline static const ConsoleGameViewSettings defaultSettings{
+    .mineCell = '*',
+    .closedCell = '#',
+    .emptyCell = '.',
+    .delimiter = ' ',
+    .headerColor = ConsoleColors::BrightYellow,
+    .rowNumberColor = defaultSettings.headerColor,
+    .mineColor = ConsoleColors::Red,
+    .closedColor = ConsoleColors::BrightWhite,
+    .neighbourColor = ConsoleColors::Yellow,
+    .emptyColor = ConsoleColors::Reset,
+    .resetColor = ConsoleColors::Reset,
+};
 
 ConsoleGameView::ConsoleGameView(IGameViewModel* viewModel)
     : ConsoleGameView(viewModel, defaultSettings) {}
