@@ -7,7 +7,6 @@
 class ConsoleColors {
 public:
     ConsoleColors() = delete;
-
 #if WIN32
 	inline static const std::string Black = "[30m";
 	inline static const std::string Red = "[31m";
@@ -29,8 +28,9 @@ public:
 
 	inline static const std::string Reset = "[0m";
 #else
+
     inline static const std::string Black = "\033[0,30m";
-    inline static const std::string Red = "\033[31m";
+    inline static const std::string Red = "\033[0,31m";
     inline static const std::string Green = "\033[0,32m";
     inline static const std::string Yellow = "\033[0,33m";
     inline static const std::string Blue = "\033[0,34m";
