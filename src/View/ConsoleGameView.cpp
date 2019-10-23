@@ -29,13 +29,17 @@ void ConsoleGameView::draw()
 	Utils::clear_screen();
 
     switch (_viewModel->getGameState()) {
-    case GameState::GAME:drawGameScreen();
+    case GameState::GAME:
+		drawGameScreen();
         break;
-    case GameState::WIN:drawWinScreen();
+    case GameState::WIN:
+		drawWinScreen();
         break;
-    case GameState::LOSE:drawLoseScreen();
+    case GameState::LOSE:
+		drawLoseScreen();
         break;
-    case GameState::EXIT:std::cout << "Exiting..." << std::endl;
+    case GameState::EXIT:
+		std::cout << "Exiting..." << std::endl;
         break;
     }
 }

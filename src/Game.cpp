@@ -40,8 +40,11 @@ void Game::processInput() const {
 	if (cmd.type == CommandType::EXIT)
 	{
 		_state = GameState::EXIT;
+		_viewModel->processGameState(_state);
+	} else
+	{
+		_viewModel->executeCommand(cmd);
 	}
-	_viewModel->executeCommand(cmd);
 }
 
 void Game::draw() const {
