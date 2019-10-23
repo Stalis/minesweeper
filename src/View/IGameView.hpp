@@ -23,4 +23,6 @@ public:
     virtual void draw() = 0;
     virtual void setCommandCallback(TCommandCallback* callback) = 0;
 	virtual Command waitInput() = 0;
+    virtual void toWinScreen() = 0;
+    virtual void toLoseScreen() = 0;
 };

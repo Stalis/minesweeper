@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 project(minesweeper)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 if (MSVC)
     set(CMAKE_CXX_FLAGS_DEBUG "/Wall /Od /utf-8 /Zi")
@@ -28,7 +28,7 @@ set(SOURCES
         src/Utils.hpp)
 
 if (WITH_CURSES)
-    set(SOURCES ${SOURCES} src/View/CursesGameView.cpp src/View/CursesGameView.hpp)
+    set(SOURCES ${SOURCES} src/View/CursesGameView.cpp src/View/CursesGameView.hpp src/View/ConsoleColors.hpp)
 endif ()
 
 add_executable(minesweeper main.cpp ${SOURCES})

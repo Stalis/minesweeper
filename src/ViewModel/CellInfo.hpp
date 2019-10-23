@@ -6,9 +6,10 @@
 
 class CellInfo {
 public:
-    CellInfo(bool mine) : _isMine(mine) {}
+    CellInfo(bool mine, int nearMines) :
+        _nearMines(nearMines), _isMine(mine) {}
 
-    CellInfo(int nearMines) : _nearMines(nearMines) {}
+    explicit CellInfo(int nearMines) : _nearMines(nearMines) {}
 
     bool isOpened() const { return _opened; }
 

@@ -27,6 +27,7 @@ void Game::init()
 void Game::update() {
     processInput();
     draw();
+    _state = _viewModel->getGameState();
 }
 
 bool Game::isExitState() const {

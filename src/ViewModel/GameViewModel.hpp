@@ -17,9 +17,11 @@ public:
     TCellMatrix& getCellGrid() override;
     void movePointer(const Vector2& pos) override;
     void processGameState(GameState state) override;
+    GameState getGameState() override;
 private:
     IMap* _map;
     TCellMatrix* _array;
+    GameState _state;
     void initCellGrid();
     CellInfo getCellInfo(const Coordinate& coord) const;
 	void openCell(int x, int y);

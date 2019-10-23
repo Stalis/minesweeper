@@ -10,46 +10,34 @@
 
 #include "src/Utils.hpp"
 
-static const char ClosedCell = '#';
-static const char MineCell = '*';
-static const char EmptyCell = ' ';
-static const char Delimiter = ' ';
-
-static const std::string red("\033[0;31m");
-std::string reset("\033[0m");
-
-static char getCellChar(const CellInfo& info);
 static Command parseInput(const std::string& input);
-static void printHeader(int count);
+static void printHeader(int count, char delimiter);
 static int getColumnNumber(const std::string& name);
 static std::string getColumnName(int number);
 
+inline static const ConsoleGameViewSettings defaultSettings = ConsoleGameViewSettings{};
+
 ConsoleGameView::ConsoleGameView(IGameViewModel* viewModel)
-	: _gridView(std::map<Coordinate, char>{}), _viewModel(viewModel)
-{}
+    : ConsoleGameView(viewModel, defaultSettings) {}
+
+ConsoleGameView::ConsoleGameView(IGameViewModel* viewModel, const ConsoleGameViewSettings& settings)
+    : _settings(settings), _gridView(std::map<Coordinate, char>{}), _viewModel(viewModel),
+      _commandCallback(nullptr) {}
 
 void ConsoleGameView::draw()
 {
 	Utils::clear_screen();
 
-	auto& grid = _viewModel->getCellGrid();
-    std::cout << Delimiter << Delimiter << red << std::flush;
-	printHeader(grid.size());
-    std::cout << reset << std::endl;
-
-	int counter = 1;
-	for (auto& row : grid)
-	{
-        std::cout << red << counter++ << reset << Delimiter << std::flush;
-
-		for (auto& item : row)
-		{
-			std::cout << getCellChar(item) << Delimiter << std::flush;
-		}
-		std::cout << std::endl;
-	}
-
-	std::cout << "> " << std::flush;
+    switch (_viewModel->getGameState()) {
+    case GameState::GAME:drawGameScreen();
+        break;
+    case GameState::WIN:drawWinScreen();
+        break;
+    case GameState::LOSE:drawLoseScreen();
+        break;
+    case GameState::EXIT:std::cout << "Exiting..." << std::endl;
+        break;
+    }
 }
 
 void ConsoleGameView::setCommandCallback(IGameView::TCommandCallback* callback) {
@@ -69,8 +57,44 @@ Command ConsoleGameView::waitInput()
     return cmd;
 }
 
-static char getCellChar(const CellInfo& info)
-{
+void ConsoleGameView::toLoseScreen() {
+}
+
+void ConsoleGameView::toWinScreen() {
+}
+
+void ConsoleGameView::drawWinScreen() {
+    std::cout << ConsoleColors::BrightGreen << "Yow win!" << ConsoleColors::Reset << std::endl;
+}
+
+void ConsoleGameView::drawLoseScreen() {
+    std::cout << ConsoleColors::Red << "You lose!" << ConsoleColors::Reset << std::endl;
+}
+
+void ConsoleGameView::drawGameScreen() {
+    auto& grid = _viewModel->getCellGrid();
+    std::cout << _settings.delimiter << _settings.delimiter << _settings.headerColor << std::flush;
+    printHeader(grid.size(), _settings.delimiter);
+    std::cout << _settings.resetColor << std::endl;
+
+    int counter = 1;
+    for (auto& row : grid) {
+        std::cout << _settings.rowNumberColor << counter++ << _settings.resetColor << _settings.delimiter << std::flush;
+        for (auto& item : row) {
+            putCellChar(item);
+            std::cout << _settings.delimiter << std::flush;
+        }
+        std::cout << _settings.resetColor << std::endl;
+    }
+
+    std::cout << "> " << std::flush;
+}
+
+void ConsoleGameView::putCellChar(const CellInfo& info) {
+    std::string colorSwitch;
+    std::string resetSwitch = _settings.resetColor;
+    char ch;
+
 	bool isMine = false;
 	if (info.isOpened(isMine))
 	{
@@ -79,13 +103,22 @@ static char getCellChar(const CellInfo& info)
 			int nearMines = info.nearMines();
 			if (0 == nearMines)
 			{
-				return EmptyCell;
+                colorSwitch = _settings.emptyColor;
+                ch = _settings.emptyCell;
+            } else {
+                colorSwitch = _settings.neighbourColor;
+                ch = std::to_string(nearMines)[0];
 			}
-			return std::to_string(nearMines) [0];
-		}
-		return MineCell;
-	}
-	return ClosedCell;
+        } else {
+            colorSwitch = _settings.mineColor;
+            ch = _settings.mineCell;
+        }
+    } else {
+        colorSwitch = _settings.closedColor;
+        ch = _settings.closedCell;
+    }
+
+    std::cout << colorSwitch << ch << resetSwitch << std::flush;
 }
 
 static Command parseInput(const std::string& input)
@@ -95,10 +128,12 @@ static Command parseInput(const std::string& input)
     }
 	std::vector<std::string> words{};
     std::stringstream stream(input);
-    std::string word;
-    while (std::getline(stream, word, ' ')) {
-        words.push_back(word);
-	}
+    {
+        std::string word;
+        while (std::getline(stream, word, ' ')) {
+            words.push_back(word);
+        }
+    }
 
 	for (auto& word : words)
 	{
@@ -117,15 +152,21 @@ static Command parseInput(const std::string& input)
 		return Command::Open(x, y);
 	}
 
+    if (words.at(0).length() == 1) {
+        int x = getColumnNumber(words.at(0));
+        int y = std::stoi(words.at(1)) - 1;
+        return Command::Open(x, y);
+    }
+
     std::cin.get();
 	return Command::INVALID;
 }
 
-void printHeader(int count)
+void printHeader(int count, char delimiter)
 {
 	for (int i = 0; i < count; i++)
 	{
-		std::cout << getColumnName(i) << Delimiter << std::flush;
+        std::cout << getColumnName(i) << delimiter << std::flush;
 	}
 }
 

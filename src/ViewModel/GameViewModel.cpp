@@ -5,6 +5,10 @@
 #include "GameViewModel.hpp"
 
 void GameViewModel::executeCommand(Command cmd) {
+    if (_state == GameState::LOSE || _state == GameState::WIN) {
+        _state = GameState::EXIT;
+        return;
+    }
 	if (cmd.type == CommandType::OPEN)
 	{
 		openCell(cmd.x, cmd.y);
@@ -19,16 +23,16 @@ IGameViewModel::TCellMatrix& GameViewModel::getCellGrid() {
 }
 
 CellInfo GameViewModel::getCellInfo(const Coordinate& coord) const {
-    if (_map->isMine(coord)) {
-        return CellInfo{true};
-    }
-
     auto neighbours = _map->getNeighbours(coord);
     int count = 0;
     for (auto& item : neighbours) {
         if (_map->isMine(item)) {
             count++;
         }
+    }
+
+    if (_map->isMine(coord)) {
+        return CellInfo{true, count};
     }
 
     return CellInfo{count};
@@ -57,7 +61,7 @@ void GameViewModel::openCell(int x, int y)
 	info.open(isMine);
 	if (isMine)
 	{
-
+        processGameState(GameState::LOSE);
 	}
 }
 
@@ -65,4 +69,9 @@ void GameViewModel::movePointer(const Vector2& pos) {
 }
 
 void GameViewModel::processGameState(GameState state) {
+    _state = state;
+}
+
+GameState GameViewModel::getGameState() {
+    return _state;
 }
