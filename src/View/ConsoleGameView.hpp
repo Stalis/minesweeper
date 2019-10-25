@@ -27,8 +27,8 @@ struct ConsoleGameViewSettings {
 
 class ConsoleGameView : public IGameView {
 public:
-    explicit ConsoleGameView(IGameViewModel* viewModel);
-    ConsoleGameView(IGameViewModel* viewModel, const ConsoleGameViewSettings& settings);
+    explicit ConsoleGameView(std::shared_ptr<IGameViewModel> viewModel);
+    ConsoleGameView(std::shared_ptr<IGameViewModel> viewModel, const ConsoleGameViewSettings& settings);
     ~ConsoleGameView() override = default;
 
     void draw() override;
@@ -39,12 +39,13 @@ public:
 private:
     ConsoleGameViewSettings _settings;
     std::map<Coordinate, char> _gridView;
-    IGameViewModel* _viewModel;
+    std::shared_ptr<IGameViewModel> _viewModel;
     TCommandCallback* _commandCallback;
 
     void drawWinScreen();
     void drawLoseScreen();
     void drawGameScreen();
+	void drawMap();
     void putCellChar(const CellInfo& info);
 };
 

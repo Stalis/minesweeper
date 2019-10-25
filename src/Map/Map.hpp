@@ -17,10 +17,10 @@ public:
     std::vector<Coordinate> getNeighbours(const Coordinate& coord) const override;
     int getWidth() const override;
     int getHeight() const override;
-    std::map<Coordinate, Cell> _cells;
-
+	void insertCell(const Coordinate&, const Cell&);
 private:
     const Cell* getCell(const Coordinate&) const;
+    std::map<Coordinate, Cell> _cells;
     int _width, _height;
 };
 

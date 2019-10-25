@@ -20,7 +20,6 @@ public:
 
     virtual void executeCommand(Command cmd) = 0;
     virtual TCellMatrix& getCellGrid() = 0;
-    virtual void movePointer(const Vector2& pos) = 0;
     virtual void processGameState(GameState state) = 0;
     virtual GameState getGameState() = 0;
 };

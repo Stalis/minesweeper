@@ -11,11 +11,14 @@ public:
     const int x, y;
 
     Vector2() : Vector2(0, 0) {}
+	Vector2(const Vector2&) = default;
     Vector2(int x, int y) : x(x), y(y) {}
 
     float length() const {
         return sqrt(static_cast<float>(x * x) + static_cast<float>(y * y));
     }
+
+	Vector2& operator=(Vector2&&) = default;
 
     Vector2 operator+(const Vector2& other) const {
         return Vector2{x + other.x, y + other.y};

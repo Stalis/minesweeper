@@ -8,6 +8,7 @@
 #include "ViewModel/GameViewModel.hpp"
 #include <chrono>
 #include <thread>
+#include <memory>
 
 Game::Game()
     : Game(GameSettings{}){ }
@@ -15,8 +16,8 @@ Game::Game()
 Game::Game(const GameSettings& settings)
     : _settings(settings), _state(GameState::GAME) {
     _map = IMapFactory::CreateMap(_settings.mines, _settings.width, _settings.height);
-    _viewModel = new GameViewModel(_map);
-    _view = new ConsoleGameView(_viewModel);
+    _viewModel = std::make_shared<GameViewModel>(_map);
+    _view = std::make_shared<ConsoleGameView>(_viewModel);
 }
 
 void Game::init()
@@ -52,7 +53,7 @@ void Game::draw() const {
 }
 
 Game::~Game() {
-    delete _view;
-    delete _viewModel;
-    delete _map;
+	_view.~shared_ptr();
+	_viewModel.~shared_ptr();
+	_map.~shared_ptr();
 }

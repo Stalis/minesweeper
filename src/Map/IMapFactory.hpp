@@ -5,6 +5,7 @@
 #pragma once
 
 #include "IMap.hpp"
+#include <memory>
 
 static const int RANDOM_MAX = 0x7fffffff;
 
@@ -17,10 +18,10 @@ class IMapFactory {
 public:
     IMapFactory() = delete;
     IMapFactory(const IMapFactory&) = delete;
-    static IMap* CreateMap(int mineCount);
-    static IMap* CreateMap(int mineCount, int randWindow);
-    static IMap* CreateMap(int mineCount, int width, int height);
-    static IMap* CreateMap(int mineCount, int randWindow, int width, int height);
+    static std::shared_ptr<IMap> CreateMap(int mineCount);
+    static std::shared_ptr<IMap> CreateMap(int mineCount, int randWindow);
+    static std::shared_ptr<IMap> CreateMap(int mineCount, int width, int height);
+    static std::shared_ptr<IMap> CreateMap(int mineCount, int randWindow, int width, int height);
 };
 
 

@@ -7,6 +7,7 @@
 #include "View/IGameView.hpp"
 #include "Map/Map.hpp"
 #include "ViewModel/IGameViewModel.hpp"
+#include <memory>
 
 struct GameSettings {
     int width = 8;
@@ -23,9 +24,9 @@ public:
     bool isExitState() const;
     ~Game();
 private:
-    IGameView* _view;
-    IGameViewModel* _viewModel;
-    IMap* _map;
+    std::shared_ptr<IGameView> _view;
+    std::shared_ptr<IGameViewModel> _viewModel;
+    std::shared_ptr<IMap> _map;
     GameSettings _settings;
     mutable GameState _state;
     void processInput() const;

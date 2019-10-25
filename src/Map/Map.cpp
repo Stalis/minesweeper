@@ -40,6 +40,11 @@ std::vector<Coordinate> Map::getNeighbours(const Coordinate& coord) const {
     return res;
 }
 
+void Map::insertCell(const Coordinate & coord, const Cell & cell)
+{
+	_cells.insert_or_assign(coord, cell);
+}
+
 const Cell* Map::getCell(const Coordinate& coord) const {
     auto iter = _cells.find(coord);
     if (iter == _cells.end())

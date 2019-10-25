@@ -42,7 +42,7 @@ void GameViewModel::initCellGrid() {
     int width = _map->getWidth();
     int height = _map->getHeight();
 
-    auto* res = new TCellMatrix();
+    auto res = std::make_unique<TCellMatrix>();
 
     for (int y = 0; y < height; y++) {
         TCellRow row{};
@@ -51,7 +51,7 @@ void GameViewModel::initCellGrid() {
         }
         res->push_back(row);
     }
-    _array = res;
+    _array = std::move(res);
 }
 
 void GameViewModel::openCell(int x, int y)
@@ -69,11 +69,21 @@ void GameViewModel::openCell(int x, int y)
     }
 }
 
-void GameViewModel::movePointer(const Vector2& pos) {
-}
-
 void GameViewModel::processGameState(GameState state) {
-    _state = state;
+	_state = state;
+
+	if (state == GameState::LOSE || state == GameState::WIN)
+	{
+		for (auto& v_it = _array->begin(); v_it < _array->end(); v_it++)
+		{
+			auto& row = *v_it;
+			for (auto& h_it = row.begin(); h_it < row.end(); h_it++)
+			{
+				bool _ = false;
+				h_it->open(_);
+			}
+		}
+	}
 }
 
 GameState GameViewModel::getGameState() {

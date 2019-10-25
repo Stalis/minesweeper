@@ -9,19 +9,19 @@
 #include "IMapFactory.hpp"
 #include "Map.hpp"
 
-IMap* IMapFactory::CreateMap(int minesCount) {
+std::shared_ptr<IMap> IMapFactory::CreateMap(int minesCount) {
     return CreateMap(minesCount, DEFAULT_RANDOM_WINDOW);
 }
 
-IMap* IMapFactory::CreateMap(int mineCount, int randWindow) {
+std::shared_ptr<IMap>IMapFactory::CreateMap(int mineCount, int randWindow) {
     return CreateMap(mineCount, randWindow, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 }
 
-IMap* IMapFactory::CreateMap(int mineCount, int width, int height) {
+std::shared_ptr<IMap>IMapFactory::CreateMap(int mineCount, int width, int height) {
     return CreateMap(mineCount, DEFAULT_RANDOM_WINDOW, width, height);
 }
 
-IMap* IMapFactory::CreateMap(int mineCount, int randWindow, int width, int height) {
+std::shared_ptr<IMap> IMapFactory::CreateMap(int mineCount, int randWindow, int width, int height) {
     /// ========== START ASSERTIONS =========== ///
     // Randomize assertions
     if (randWindow > RANDOM_MAX || randWindow < 0) {
@@ -39,8 +39,7 @@ IMap* IMapFactory::CreateMap(int mineCount, int randWindow, int width, int heigh
     }
     /// ========== END ASSERTIONS =========== ///
 
-    auto* instance = new Map(width, height);
-    auto cells = &instance->_cells;
+    auto instance = std::make_shared<Map>(width, height);
     /// ========== Initialize C++11 randomizer =========== ///
     std::random_device rd;
     std::mt19937 mt(rd());
@@ -59,12 +58,8 @@ IMap* IMapFactory::CreateMap(int mineCount, int randWindow, int width, int heigh
                     currentMineCount++;
                 }
             }
-            cells->insert(std::pair<Coordinate, Cell>(coord, Cell(isMine)));
+			instance->insertCell(coord, Cell(isMine));
         }
-    }
-
-    for (auto& item : *cells) {
-        std::cout << "{" << item.first.x << "; " << item.first.y << "} " << item.second.hasMine() << std::endl << std::flush;
     }
 
     return instance;

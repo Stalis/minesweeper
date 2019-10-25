@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
 if (MSVC)
-    set(CMAKE_CXX_FLAGS_DEBUG "/Wall /Od /utf-8 /Zi")
+    set(CMAKE_CXX_FLAGS_DEBUG "/Wall /Od /utf-8 /Zi /wd4514")
 else ()
     set(CMAKE_CXX_FLAGS_DEBUG "--debug -Wall -Wpedantic")
 endif ()
