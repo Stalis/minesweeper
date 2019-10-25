@@ -6,16 +6,16 @@
 
 class CellInfo {
 public:
+    explicit CellInfo(int nearMines) : _nearMines(nearMines) {}
+
     CellInfo(bool mine, int nearMines) :
         _nearMines(nearMines), _isMine(mine) {}
-
-    explicit CellInfo(int nearMines) : _nearMines(nearMines) {}
 
     bool isOpened() const { return _opened; }
 
     bool isOpened(bool& isMine) const {
         isMine = _isMine;
-        return _opened;
+        return isOpened();
     }
 
     int nearMines() const { return _nearMines; }

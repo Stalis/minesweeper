@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 project(minesweeper)
 
-set(CMAKE_C_STANDARD c11)
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
 if (MSVC)
@@ -11,27 +11,32 @@ else ()
 endif ()
 
 set(SOURCES
+        src/Map/IMap.hpp
+        src/Map/IMapFactory.hpp src/Map/IMapFactory.cpp
         src/Map/Cell.hpp
-        src/Map/Map.hpp src/Map/Map.cpp
         src/Map/Coordinate.hpp
+        src/Map/Map.hpp src/Map/Map.cpp
+
+        src/View/IGameView.hpp
         src/View/ConsoleColors.hpp
         src/View/ConsoleGameView.cpp src/View/ConsoleGameView.hpp
-        src/View/IGameView.hpp
-        src/Game.cpp src/Game.hpp
-        src/Map/IMap.hpp
-        src/Map/IMapFactory.cpp
-        src/Map/IMapFactory.hpp
-        src/Command.hpp src/Command.cpp
+
+        src/ViewModel/IGameViewModel.hpp
         src/ViewModel/CellInfo.hpp
         src/ViewModel/GameViewModel.cpp src/ViewModel/GameViewModel.hpp
-        src/ViewModel/IGameViewModel.hpp
+
+        src/Game.cpp src/Game.hpp
+        src/Command.hpp src/Command.cpp
         src/Vector2.hpp
         src/GameState.hpp
         src/Utils.hpp
         )
 
 if (WITH_CURSES)
-    set(SOURCES ${SOURCES} src/View/CursesGameView.cpp src/View/CursesGameView.hpp src/View/ConsoleColors.hpp src/Presenter/IGamePresenter.hpp src/Model/GameModel.cpp src/Model/GameModel.hpp src/Presenter/GamePresenter.cpp src/Presenter/GamePresenter.hpp src/Model/IGameModel.hpp)
+    set(SOURCES
+            ${SOURCES}
+            src/View/CursesGameView.cpp src/View/CursesGameView.hpp
+            )
 endif ()
 
 add_executable(minesweeper main.cpp ${SOURCES})
