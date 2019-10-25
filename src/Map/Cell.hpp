@@ -9,9 +9,15 @@ public:
 	Cell(bool isMine) : _hasMine(isMine) {};
 	Cell(const Cell&) = default;
     bool hasMine() const { return _hasMine; }
-	Cell& operator=(const Cell& other) { return Cell(other); };
+
+    Cell& operator=(const Cell& other)
+#if WIN32
+    { return Cell(other); };
+#else
+    = default;
+#endif
 private:
-    const bool _hasMine = false;
+    bool _hasMine = false;
 };
 
 

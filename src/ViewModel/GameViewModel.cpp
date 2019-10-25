@@ -74,13 +74,11 @@ void GameViewModel::processGameState(GameState state) {
 
 	if (state == GameState::LOSE || state == GameState::WIN)
 	{
-		for (auto& v_it = _array->begin(); v_it < _array->end(); v_it++)
-		{
-			auto& row = *v_it;
-			for (auto& h_it = row.begin(); h_it < row.end(); h_it++)
+        bool _ = false;
+        for (auto& row : *_array) {
+            for (auto& x : row)
 			{
-				bool _ = false;
-				h_it->open(_);
+                x.open(_);
 			}
 		}
 	}
