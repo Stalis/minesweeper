@@ -78,11 +78,8 @@ static std::unique_ptr<std::vector<Coordinate>> generateMines(int count, int wid
     while (added < count) {
          Coordinate c(wDist(mt), hDist(mt));
          if (!hasMine(*res, c)) {
-             printf("Added x: %d; y: %d\n", c.x, c.y);
              res->push_back(c);
              added++;
-         } else {
-             printf("Not added x: %d; y: %d\n", c.x, c.y);
          }
     }
 
