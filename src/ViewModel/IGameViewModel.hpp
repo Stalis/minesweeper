@@ -22,4 +22,5 @@ public:
     virtual TCellMatrix& getCellGrid() = 0;
     virtual void processGameState(GameState state) = 0;
     virtual GameState getGameState() = 0;
+    virtual bool checkIsWin() const = 0;
 };

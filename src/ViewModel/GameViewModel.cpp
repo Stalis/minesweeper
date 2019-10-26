@@ -22,6 +22,7 @@ IGameViewModel::TCellMatrix& GameViewModel::getCellGrid() {
     return *_array;
 }
 
+[[nodiscard]]
 CellInfo GameViewModel::getCellInfo(const Coordinate& coord) const {
     auto neighbours = _map->getNeighbours(coord);
     int count = 0;
@@ -65,14 +66,19 @@ void GameViewModel::openCell(int x, int y)
         info.open(isMine);
         if (isMine) {
             processGameState(GameState::LOSE);
+        } else {
+            processGameState(GameState::GAME);
         }
     }
 }
 
 void GameViewModel::processGameState(GameState state) {
 	_state = state;
+    if (checkIsWin()) {
+        _state = GameState::WIN;
+    }
 
-	if (state == GameState::LOSE || state == GameState::WIN)
+	if (_state == GameState::LOSE || _state == GameState::WIN)
 	{
         bool _ = false;
         for (auto& row : *_array) {
@@ -86,4 +92,20 @@ void GameViewModel::processGameState(GameState state) {
 
 GameState GameViewModel::getGameState() {
     return _state;
+}
+
+bool GameViewModel::checkIsWin() const {
+    bool isMine = false;
+    bool allClosedIsMines = true;
+
+    // if on cell contains no mine - `allClosedIsMines` turns to false
+    for (auto& row : *_array) {
+        for (auto& cell : row) {
+            if (!cell.isOpened(isMine)) {
+                allClosedIsMines &= isMine;
+            }
+        }
+    }
+
+    return allClosedIsMines;
 }

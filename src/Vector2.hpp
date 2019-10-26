@@ -18,8 +18,6 @@ public:
         return sqrt(static_cast<float>(x * x) + static_cast<float>(y * y));
     }
 
-	Vector2& operator=(Vector2&&) = default;
-
     Vector2 operator+(const Vector2& other) const {
         return Vector2{x + other.x, y + other.y};
     }
