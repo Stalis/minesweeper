@@ -10,12 +10,7 @@ public:
 	Cell(const Cell&) = default;
     bool hasMine() const { return _hasMine; }
 
-    Cell& operator=(const Cell& other)
-#if WIN32
-    { return Cell(other); };
-#else
-    = default;
-#endif
+    Cell& operator=(const Cell& other) = default;
 private:
     bool _hasMine = false;
 };

@@ -10,22 +10,23 @@
 
 #include "src/Utils.hpp"
 
-static Command parseInput(const std::string& input);
 static void printHeader(int count, char delimiter);
 
 static bool readColumnNumber(const std::string& name, int& number);
 static bool readColumnName(int number, std::string& name);
 
+static const ConsoleCommandReader::TConverter tConverterRef{readColumnNumber};
 inline static const ConsoleGameViewSettings defaultSettings = ConsoleGameViewSettings{};
 
-static const std::string HeaderAlphabet = "abcdefghjklmnopqrstuvwxyz";
+static const std::string HeaderAlphabet{"abcdefghjklmnopqrstuvwxyz"};
 
 ConsoleGameView::ConsoleGameView(std::shared_ptr<IGameViewModel> viewModel)
     : ConsoleGameView(viewModel, defaultSettings) {}
 
 ConsoleGameView::ConsoleGameView(std::shared_ptr<IGameViewModel> viewModel, const ConsoleGameViewSettings& settings)
-    : _settings(settings), _gridView(std::map<Coordinate, char>{}), _viewModel(viewModel),
-      _commandCallback(nullptr) {}
+    : _settings(settings), _gridView(std::map<Coordinate, char>{}), _viewModel(std::move(viewModel)),
+      _commandCallback(nullptr),
+      _commandReader(std::make_unique<ConsoleCommandReader>(tConverterRef)) {}
 
 void ConsoleGameView::draw()
 {
@@ -57,7 +58,8 @@ Command ConsoleGameView::waitInput()
 {
 	std::string input{};
 	std::getline(std::cin, input);
-    auto cmd = parseInput(input);
+    auto cmd = _commandReader->convertToCommand(input);
+//    std::cin.get();
     if (nullptr != _commandCallback) {
         (*_commandCallback)(cmd);
     }
@@ -135,63 +137,6 @@ void ConsoleGameView::putCellChar(const CellInfo& info) {
     }
 
     std::cout << colorSwitch << ch << resetSwitch << std::flush;
-}
-
-static Command parseInput(const std::string& input)
-{
-    if (input.length() == 0) {
-        return Command::INVALID;
-    }
-	std::vector<std::string> words{};
-    std::stringstream stream(input);
-    {
-        std::string word;
-        while (std::getline(stream, word, ' ')) {
-            words.push_back(word);
-        }
-    }
-
-	for (auto& word : words)
-	{
-		std::cout << word << std::endl;
-	}
-
-	if (words.at(0) == "exit")
-	{
-		return Command::EXIT;
-	}
-
-    int x = -1, y = -1;
-	if (words.at(0) == "open")
-	{
-		if (readColumnNumber(words.at(1), x))
-		{
-			y = std::stoi(words.at(2)) - 1;
-			return Command::Open(x, y);
-		}
-	}
-
-	if (words.size >= 2)
-	{
-		if (words.at(0).length() == 1)
-		{
-			if (readColumnNumber(words.at(0), x))
-			{
-				y = std::stoi(words.at(1)) - 1;
-				return Command::Open(x, y);
-			}
-		}
-	}
-
-    if (words.at(0).length() == 2) {
-        if (readColumnNumber(words.at(0).substr(0, 1), x)) {
-            y = std::stoi(words.at(0).substr(1, 1)) - 1;
-            return Command::Open(x, y);
-        }
-    }
-
-    std::cin.get();
-	return Command::INVALID;
 }
 
 static void printHeader(int count, char delimiter) {

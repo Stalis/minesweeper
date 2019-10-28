@@ -30,7 +30,7 @@ set(SOURCES
         src/Vector2.hpp
         src/GameState.hpp
         src/Utils.hpp
-        )
+        src/View/ConsoleCommandReader.cpp src/View/ConsoleCommandReader.hpp)
 
 if (WITH_CURSES)
     set(SOURCES

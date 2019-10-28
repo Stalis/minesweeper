@@ -10,6 +10,7 @@
 #include "src/Map/Coordinate.hpp"
 #include "src/ViewModel/IGameViewModel.hpp"
 #include "ConsoleColors.hpp"
+#include "ConsoleCommandReader.hpp"
 
 struct ConsoleGameViewSettings {
     const char mineCell = '*';
@@ -41,6 +42,7 @@ private:
     std::map<Coordinate, char> _gridView;
     std::shared_ptr<IGameViewModel> _viewModel;
     TCommandCallback* _commandCallback;
+    std::unique_ptr<ConsoleCommandReader> _commandReader;
 
     void drawWinScreen();
     void drawLoseScreen();
