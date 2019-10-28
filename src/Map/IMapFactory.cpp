@@ -13,25 +13,11 @@ static std::unique_ptr<std::vector<Coordinate>> generateMines(int count, int wid
 static inline bool hasMine(std::vector<Coordinate>& vec, Coordinate coord);
 
 std::shared_ptr<IMap> IMapFactory::CreateMap(int minesCount) {
-    return CreateMap(minesCount, DEFAULT_RANDOM_WINDOW);
+    return CreateMap(minesCount, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 }
 
-std::shared_ptr<IMap>IMapFactory::CreateMap(int mineCount, int randWindow) {
-    return CreateMap(mineCount, randWindow, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-}
-
-std::shared_ptr<IMap>IMapFactory::CreateMap(int mineCount, int width, int height) {
-    return CreateMap(mineCount, DEFAULT_RANDOM_WINDOW, width, height);
-}
-
-std::shared_ptr<IMap> IMapFactory::CreateMap(int mineCount, int randWindow, int width, int height) {
+std::shared_ptr<IMap> IMapFactory::CreateMap(int mineCount, int width, int height) {
     /// ========== START ASSERTIONS =========== ///
-    // Randomize assertions
-    if (randWindow > RANDOM_MAX || randWindow < 0) {
-        std::string str("[IMapFactory::CreateMap] Invalid random window: ");
-        str.append(std::to_string(randWindow));
-        throw std::runtime_error(str);
-    }
     // Size assertion
     if (width < 0 || height < 0) {
         std::string str("[IMapFactory::CreateMap] Invalid map size: ");
@@ -71,8 +57,8 @@ static std::unique_ptr<std::vector<Coordinate>> generateMines(int count, int wid
 
     std::random_device rd;
     std::mt19937 mt(rd());
-    std::uniform_int_distribution<int> wDist(0, width);
-    std::uniform_int_distribution<int> hDist(0, height);
+    std::uniform_int_distribution<int> wDist(0, width - 1);
+    std::uniform_int_distribution<int> hDist(0, height - 1);
 
     int added = 0;
     while (added < count) {

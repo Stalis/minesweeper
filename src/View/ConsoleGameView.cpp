@@ -164,18 +164,24 @@ static Command parseInput(const std::string& input)
     int x = -1, y = -1;
 	if (words.at(0) == "open")
 	{
-        if (readColumnNumber(words.at(1), x)) {
-            y = std::stoi(words.at(2)) - 1;
-            return Command::Open(x, y);
-        }
+		if (readColumnNumber(words.at(1), x))
+		{
+			y = std::stoi(words.at(2)) - 1;
+			return Command::Open(x, y);
+		}
 	}
 
-    if (words.at(0).length() == 1) {
-        if (readColumnNumber(words.at(0), x)) {
-            y = std::stoi(words.at(1)) - 1;
-            return Command::Open(x, y);
-        }
-    }
+	if (words.size >= 2)
+	{
+		if (words.at(0).length() == 1)
+		{
+			if (readColumnNumber(words.at(0), x))
+			{
+				y = std::stoi(words.at(1)) - 1;
+				return Command::Open(x, y);
+			}
+		}
+	}
 
     if (words.at(0).length() == 2) {
         if (readColumnNumber(words.at(0).substr(0, 1), x)) {
