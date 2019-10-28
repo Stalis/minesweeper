@@ -8,7 +8,7 @@
 
 class Vector2 {
 public:
-    const int x, y;
+    int x, y;
 
     Vector2() : Vector2(0, 0) {}
 	Vector2(const Vector2&) = default;
@@ -37,4 +37,9 @@ public:
     bool operator==(const Vector2& other) const {
         return x == other.x && y == other.y;
     }
+
+	bool operator!=(const Vector2& other) const
+	{
+		return !(*this == other);
+	}
 };

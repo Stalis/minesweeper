@@ -13,6 +13,14 @@ void GameViewModel::executeCommand(Command cmd) {
 	{
 		openCell(cmd.x, cmd.y);
 	}
+	if (cmd.type == CommandType::MARK)
+	{
+		markCell(cmd.x, cmd.y);
+	}
+	if (cmd.type == CommandType::UNMARK)
+	{
+		unmarkCell(cmd.x, cmd.y);
+	}
 }
 
 IGameViewModel::TCellMatrix& GameViewModel::getCellGrid() {
@@ -63,13 +71,40 @@ void GameViewModel::openCell(int x, int y)
     if (y < _array->size() && x < _array->at(y).size()) {
         auto& info = _array->at(y).at(x);
         bool isMine = false;
-        info.open(isMine);
+		if (!info.isMarked())
+		{
+			info.open(isMine);
+		}
         if (isMine) {
             processGameState(GameState::LOSE);
         } else {
             processGameState(GameState::GAME);
         }
     }
+}
+
+void GameViewModel::markCell(int x, int y)
+{
+	if (x < 0 || y < 0)
+		return;
+
+	if (y < _array->size() && x < _array->at(y).size())
+	{
+		auto& info = _array->at(y).at(x);
+		info.mark();
+	}
+}
+
+void GameViewModel::unmarkCell(int x, int y)
+{
+	if (x < 0 || y < 0)
+		return;
+
+	if (y < _array->size() && x < _array->at(y).size())
+	{
+		auto& info = _array->at(y).at(x);
+		info.unmark();
+	}
 }
 
 void GameViewModel::processGameState(GameState state) {

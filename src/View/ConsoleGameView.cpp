@@ -133,7 +133,13 @@ void ConsoleGameView::putCellChar(const CellInfo& info) {
         }
     } else {
         colorSwitch = _settings.closedColor;
-        ch = _settings.closedCell;
+		if (info.isMarked())
+		{
+			ch = _settings.markedCell;
+		} else
+		{
+			ch = _settings.closedCell;
+		}
     }
 
     std::cout << colorSwitch << ch << resetSwitch << std::flush;

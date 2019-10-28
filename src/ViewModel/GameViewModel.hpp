@@ -26,6 +26,8 @@ private:
     void initCellGrid();
     [[nodiscard]] CellInfo getCellInfo(const Coordinate& coord) const;
 	void openCell(int x, int y);
+	void markCell(int x, int y);
+	void unmarkCell(int x, int y);
 };
 
 

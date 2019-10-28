@@ -16,6 +16,7 @@ struct ConsoleGameViewSettings {
     const char mineCell = '*';
     const char closedCell = '#';
     const char emptyCell = '.';
+	const char markedCell = 'O';
     const char delimiter = ' ';
     const std::string& headerColor = ConsoleColors::BrightYellow;
     const std::string& rowNumberColor = headerColor;
