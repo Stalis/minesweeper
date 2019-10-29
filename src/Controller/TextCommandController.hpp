@@ -26,5 +26,3 @@ private:
 
     Command decodeCommand(const std::string&) const;
 };
-
-
