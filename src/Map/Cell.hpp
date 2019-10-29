@@ -6,13 +6,15 @@
 
 class Cell {
 public:
-	Cell(bool isMine) : _hasMine(isMine) {};
-	Cell(const Cell&) = default;
-    bool hasMine() const { return _hasMine; }
+    Cell(bool isMine)
+        : _hasMine(isMine){};
+    Cell(const Cell&) = default;
+    bool hasMine() const {
+        return _hasMine;
+    }
 
     Cell& operator=(const Cell& other) = default;
+
 private:
     bool _hasMine = false;
 };
-
-

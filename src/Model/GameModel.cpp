@@ -7,7 +7,10 @@
 
 static inline CellInfo getCellInfo(const IMap& map, const Coordinate& coord);
 
-GameModel::GameModel(const IMap& map) : _state(GameState::GAME), _map(loadMap(map)) {}
+GameModel::GameModel(const IMap& map)
+    : _state(GameState::GAME)
+    , _map(loadMap(map)) {
+}
 
 void GameModel::executeCommand(Command cmd) {
     if (isEndGame()) {
@@ -36,9 +39,13 @@ void GameModel::executeCommand(Command cmd) {
     }
 }
 
-const IGameModel::TCellMatrix& GameModel::getCellGrid() const { return *_map; }
+const IGameModel::TCellMatrix& GameModel::getCellGrid() const {
+    return *_map;
+}
 
-GameState GameModel::getGameState() const { return _state; }
+GameState GameModel::getGameState() const {
+    return _state;
+}
 
 bool GameModel::checkIsWin() const {
     bool isMine = false;
@@ -115,11 +122,17 @@ void GameModel::unmarkCell(int x, int y) {
     }
 }
 
-void GameModel::exitGame() { _state = GameState::EXIT; }
+void GameModel::exitGame() {
+    _state = GameState::EXIT;
+}
 
-bool GameModel::isEndGame() const { return _state == GameState::WIN || _state == GameState::LOSE; }
+bool GameModel::isEndGame() const {
+    return _state == GameState::WIN || _state == GameState::LOSE;
+}
 
-void GameModel::setGameState(GameState state) { _state = state; }
+void GameModel::setGameState(GameState state) {
+    _state = state;
+}
 
 void GameModel::openAll() {
     bool _ = false;

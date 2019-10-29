@@ -6,15 +6,17 @@
 #include "Map/IMapFactory.hpp"
 #include "View/ConsoleGameView.hpp"
 #include <chrono>
-#include <thread>
 #include <memory>
 #include <src/Model/GameModel.hpp>
+#include <thread>
 
 Game::Game()
-    : Game(GameSettings{}) {}
+    : Game(GameSettings{}) {
+}
 
 Game::Game(const GameSettings& settings)
-    : _settings(settings), _state(GameState::GAME) {
+    : _settings(settings)
+    , _state(GameState::GAME) {
     _map = IMapFactory::CreateMap(_settings.mines, _settings.width, _settings.height);
     _model = std::make_shared<GameModel>(*_map);
     _view = std::make_shared<ConsoleGameView>(_model);

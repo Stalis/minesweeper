@@ -2,11 +2,11 @@
 // Created by Stanislav on 29/10/2019.
 //
 
-#include "src/Vector2.hpp"
-#include "src/Utils.hpp"
 #include "TextCommandController.hpp"
-#include <vector>
+#include "src/Utils.hpp"
+#include "src/Vector2.hpp"
 #include <sstream>
+#include <vector>
 
 Command TextCommandController::waitInput() {
     std::string input{};
@@ -14,8 +14,7 @@ Command TextCommandController::waitInput() {
     return decodeCommand(input);
 }
 
-static inline Vector2 twoWordsCoord(std::string& first,
-                                    std::string& second,
+static inline Vector2 twoWordsCoord(std::string& first, std::string& second,
                                     const TextCommandController::TConverter& converter);
 static inline Vector2 oneWordCoord(std::string& word, const TextCommandController::TConverter& converter);
 static inline Vector2 parseCoord(std::vector<std::string>& words, const TextCommandController::TConverter& converter);
@@ -79,8 +78,7 @@ Command TextCommandController::decodeCommand(const std::string& input) const {
     return Command::INVALID;
 }
 
-static inline Vector2 twoWordsCoord(std::string& first,
-                                    std::string& second,
+static inline Vector2 twoWordsCoord(std::string& first, std::string& second,
                                     const TextCommandController::TConverter& converter) {
     int x = 0, y = 0;
     if (converter(first, x)) {
@@ -120,4 +118,3 @@ inline Vector2 parseCoord(std::vector<std::string>& words, const TextCommandCont
     }
     return res;
 }
-

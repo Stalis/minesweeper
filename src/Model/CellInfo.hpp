@@ -4,48 +4,50 @@
 
 #pragma once
 
-class CellInfo
-{
+class CellInfo {
 public:
-	explicit CellInfo(int nearMines) : _nearMines(nearMines) {}
+    explicit CellInfo(int nearMines)
+        : _nearMines(nearMines) {
+    }
 
-	CellInfo(bool mine, int nearMines) :
-		_nearMines(nearMines), _isMine(mine) {}
+    CellInfo(bool mine, int nearMines)
+        : _nearMines(nearMines)
+        , _isMine(mine) {
+    }
 
-	bool isOpened() const { return _opened; }
+    bool isOpened() const {
+        return _opened;
+    }
 
-	bool isOpened(bool& isMine) const
-	{
-		isMine = _isMine;
-		return isOpened();
-	}
+    bool isOpened(bool& isMine) const {
+        isMine = _isMine;
+        return isOpened();
+    }
 
-	int nearMines() const { return _nearMines; }
+    int nearMines() const {
+        return _nearMines;
+    }
 
-	void open(bool& isMine)
-	{
-		_opened = true;
-		isMine = _isMine;
-	}
+    void open(bool& isMine) {
+        _opened = true;
+        isMine = _isMine;
+    }
 
-	void mark()
-	{
-		_marked = true;
-	}
+    void mark() {
+        _marked = true;
+    }
 
-	void unmark()
-	{
-		_marked = false;
-	}
+    void unmark() {
+        _marked = false;
+    }
 
-	bool isMarked() const
-	{
-		return _marked;
-	}
+    bool isMarked() const {
+        return _marked;
+    }
 
 private:
-	int _nearMines = 0;
-	bool _opened = false;
-	bool _isMine = false;
-	bool _marked = false;
+    int _nearMines = 0;
+    bool _opened = false;
+    bool _isMine = false;
+    bool _marked = false;
 };

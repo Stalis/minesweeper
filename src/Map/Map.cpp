@@ -5,7 +5,10 @@
 #include "Map.hpp"
 
 Map::Map(int width, int height)
-    : _cells(std::map<Coordinate, Cell>{}), _width(width), _height(height) {}
+    : _cells(std::map<Coordinate, Cell>{})
+    , _width(width)
+    , _height(height) {
+}
 
 bool Map::isMine(const Coordinate& cell) const {
     auto* c = getCell(cell);
@@ -17,7 +20,7 @@ bool Map::isMine(const Coordinate& cell) const {
 std::vector<Coordinate> Map::getNeighbours(const Coordinate& coord) const {
     std::vector<Coordinate> res;
 
-    auto appendIfExist = [this, &res](int x, int y)->void {
+    auto appendIfExist = [this, &res](int x, int y) -> void {
         Coordinate c(x, y);
         if (nullptr != getCell(c)) {
             res.push_back(c);
@@ -40,9 +43,8 @@ std::vector<Coordinate> Map::getNeighbours(const Coordinate& coord) const {
     return res;
 }
 
-void Map::insertCell(const Coordinate & coord, const Cell & cell)
-{
-	_cells.insert_or_assign(coord, cell);
+void Map::insertCell(const Coordinate& coord, const Cell& cell) {
+    _cells.insert_or_assign(coord, cell);
 }
 
 const Cell* Map::getCell(const Coordinate& coord) const {

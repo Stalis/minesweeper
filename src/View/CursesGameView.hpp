@@ -16,16 +16,13 @@ public:
     void setCommandCallback(TCommandCallback* callback) override;
 
 private:
-	struct CursesWindow;
-	CursesWindow* _state;
-	int _height = 80;
-	int _width = 25;
-	int _y = 10;
-	int _x = 10;
+    struct CursesWindow;
+    CursesWindow* _state;
+    int _height = 80;
+    int _width = 25;
+    int _y = 10;
+    int _x = 10;
 
-
-	IGameViewModel* _viewModel;
-	TCommandCallback* _commandCallback;
+    IGameViewModel* _viewModel;
+    TCommandCallback* _commandCallback;
 };
-
-

@@ -25,9 +25,7 @@ private:
     void markCell(int x, int y);
     void unmarkCell(int x, int y);
     void setGameState(GameState state);
-	void openAll();
+    void openAll();
     void exitGame();
     bool isEndGame() const;
 };
-
-

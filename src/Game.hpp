@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "View/IGameView.hpp"
 #include "Map/Map.hpp"
+#include "View/IGameView.hpp"
 #include <memory>
 #include <src/Model/IGameModel.hpp>
 
@@ -19,10 +19,11 @@ class Game {
 public:
     Game();
     explicit Game(const GameSettings&);
-	void init();
+    void init();
     void update();
     bool isExitState() const;
     ~Game();
+
 private:
     std::shared_ptr<IGameView> _view;
     std::shared_ptr<IGameModel> _model;
@@ -32,5 +33,3 @@ private:
     void processInput() const;
     void draw() const;
 };
-
-

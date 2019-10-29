@@ -17,5 +17,3 @@ public:
     static std::shared_ptr<IMap> CreateMap(int mineCount);
     static std::shared_ptr<IMap> CreateMap(int mineCount, int width, int height);
 };
-
-

@@ -8,8 +8,10 @@
 
 class Coordinate : public Vector2 {
 public:
-	Coordinate(const Coordinate&) = default;
-    Coordinate(int x, int y) : Vector2(x, y) {}
+    Coordinate(const Coordinate&) = default;
+    Coordinate(int x, int y)
+        : Vector2(x, y) {
+    }
     /// For sorting in std::map
     bool operator<(const Coordinate& other) const {
         if (x == other.x)
@@ -17,7 +19,3 @@ public:
         return x < other.x;
     }
 };
-
-
-
-

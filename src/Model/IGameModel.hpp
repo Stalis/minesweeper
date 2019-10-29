@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "src/GameState.hpp"
-#include "src/Command.hpp"
 #include "CellInfo.hpp"
+#include "src/Command.hpp"
+#include "src/GameState.hpp"
 
 #include <vector>
 
@@ -20,4 +20,3 @@ public:
     virtual GameState getGameState() const = 0;
     virtual bool checkIsWin() const = 0;
 };
-

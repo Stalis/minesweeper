@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include <vector>
 #include "Coordinate.hpp"
+#include <vector>
 
 class IMap {
 public:

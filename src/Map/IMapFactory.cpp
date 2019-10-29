@@ -2,12 +2,12 @@
 // Created by Stanislav on 19/10/2019.
 //
 
-#include <iostream>
-#include <stdexcept>
-#include <string>
-#include <random>
 #include "IMapFactory.hpp"
 #include "Map.hpp"
+#include <iostream>
+#include <random>
+#include <stdexcept>
+#include <string>
 
 static std::unique_ptr<std::vector<Coordinate>> generateMines(int count, int width, int height);
 static inline bool hasMine(std::vector<Coordinate>& vec, Coordinate coord);
@@ -36,7 +36,7 @@ std::shared_ptr<IMap> IMapFactory::CreateMap(int mineCount, int width, int heigh
         for (int x = 0; x < width; x++) {
             Coordinate coord(x, y);
             bool isMine = hasMine(*minesCoord, coord);
-			instance->insertCell(coord, Cell(isMine));
+            instance->insertCell(coord, Cell(isMine));
         }
     }
 
@@ -62,11 +62,11 @@ static std::unique_ptr<std::vector<Coordinate>> generateMines(int count, int wid
 
     int added = 0;
     while (added < count) {
-         Coordinate c(wDist(mt), hDist(mt));
-         if (!hasMine(*res, c)) {
-             res->push_back(c);
-             added++;
-         }
+        Coordinate c(wDist(mt), hDist(mt));
+        if (!hasMine(*res, c)) {
+            res->push_back(c);
+            added++;
+        }
     }
 
     return res;

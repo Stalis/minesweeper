@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include <map>
 #include "Cell.hpp"
 #include "Coordinate.hpp"
 #include "IMap.hpp"
+#include <map>
 
 class Map : public IMap {
 public:
@@ -17,11 +17,10 @@ public:
     std::vector<Coordinate> getNeighbours(const Coordinate& coord) const override;
     int getWidth() const override;
     int getHeight() const override;
-	void insertCell(const Coordinate&, const Cell&);
+    void insertCell(const Coordinate&, const Cell&);
+
 private:
     const Cell* getCell(const Coordinate&) const;
     std::map<Coordinate, Cell> _cells;
     int _width, _height;
 };
-
-
