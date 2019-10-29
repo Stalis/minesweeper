@@ -7,8 +7,7 @@
 
 static inline CellInfo getCellInfo(const IMap& map, const Coordinate& coord);
 
-GameModel::GameModel(const IMap& map)
-    : _state(GameState::GAME), _map(loadMap(map)) {}
+GameModel::GameModel(const IMap& map) : _state(GameState::GAME), _map(loadMap(map)) {}
 
 void GameModel::executeCommand(Command cmd) {
     if (isEndGame()) {
@@ -17,54 +16,45 @@ void GameModel::executeCommand(Command cmd) {
 
     switch (cmd.type) {
     case CommandType::OPEN:
-		openCell(cmd.x, cmd.y);
+        openCell(cmd.x, cmd.y);
         break;
     case CommandType::MARK:
-		markCell(cmd.x, cmd.y);
+        markCell(cmd.x, cmd.y);
         break;
     case CommandType::UNMARK:
-		unmarkCell(cmd.x, cmd.y);
+        unmarkCell(cmd.x, cmd.y);
         break;
     case CommandType::EXIT:
-		exitGame();
+        exitGame();
         break;
     default:
-		break;
+        break;
     }
 
-	if (isEndGame())
-	{
-		openAll();
-	}
+    if (isEndGame()) {
+        openAll();
+    }
 }
 
-const IGameModel::TCellMatrix& GameModel::getCellGrid() const {
-    return *_map;
-}
+const IGameModel::TCellMatrix& GameModel::getCellGrid() const { return *_map; }
 
-GameState GameModel::getGameState() const {
-    return _state;
-}
+GameState GameModel::getGameState() const { return _state; }
 
 bool GameModel::checkIsWin() const {
-	bool isMine = false;
-	bool allClosedIsMines = true;
+    bool isMine = false;
+    bool allClosedIsMines = true;
 
-	// if on cell contains no mine - `allClosedIsMines` turns to false
-	for (auto& row : *_map)
-	{
-		for (auto& cell : row)
-		{
-			if (!cell.isOpened(isMine))
-			{
-				allClosedIsMines &= isMine;
-			}
-		}
-	}
+    // if on cell contains no mine - `allClosedIsMines` turns to false
+    for (auto& row : *_map) {
+        for (auto& cell : row) {
+            if (!cell.isOpened(isMine)) {
+                allClosedIsMines &= isMine;
+            }
+        }
+    }
 
-	return allClosedIsMines;
+    return allClosedIsMines;
 }
-
 
 std::unique_ptr<IGameModel::TCellMatrix> GameModel::loadMap(const IMap& map) const {
     int width = map.getWidth();
@@ -83,8 +73,9 @@ std::unique_ptr<IGameModel::TCellMatrix> GameModel::loadMap(const IMap& map) con
 }
 
 void GameModel::openCell(int x, int y) {
-    if (x < 0 || y < 0)
+    if (x < 0 || y < 0) {
         return;
+    }
 
     if (y < _map->size() && x < _map->at(y).size()) {
         auto& info = _map->at(y).at(x);
@@ -94,19 +85,18 @@ void GameModel::openCell(int x, int y) {
         }
         if (isMine) {
             setGameState(GameState::LOSE);
-        } else if (checkIsWin())
-		{
-			setGameState(GameState::WIN);
-		} else
-		{
+        } else if (checkIsWin()) {
+            setGameState(GameState::WIN);
+        } else {
             setGameState(GameState::GAME);
         }
     }
 }
 
 void GameModel::markCell(int x, int y) {
-    if (x < 0 || y < 0)
+    if (x < 0 || y < 0) {
         return;
+    }
 
     if (y < _map->size() && x < _map->at(y).size()) {
         auto& info = _map->at(y).at(x);
@@ -115,8 +105,9 @@ void GameModel::markCell(int x, int y) {
 }
 
 void GameModel::unmarkCell(int x, int y) {
-    if (x < 0 || y < 0)
+    if (x < 0 || y < 0) {
         return;
+    }
 
     if (y < _map->size() && x < _map->at(y).size()) {
         auto& info = _map->at(y).at(x);
@@ -124,29 +115,19 @@ void GameModel::unmarkCell(int x, int y) {
     }
 }
 
-void GameModel::exitGame() {
-    _state = GameState::EXIT;
-}
+void GameModel::exitGame() { _state = GameState::EXIT; }
 
-bool GameModel::isEndGame() const {
-    return _state == GameState::WIN || _state == GameState::LOSE;
-}
+bool GameModel::isEndGame() const { return _state == GameState::WIN || _state == GameState::LOSE; }
 
-void GameModel::setGameState(GameState state) {
-    _state = state;
-}
+void GameModel::setGameState(GameState state) { _state = state; }
 
-
-void GameModel::openAll()
-{
-	bool _ = false;
-	for (auto& row : *_map)
-	{
-		for (auto& cell : row)
-		{
-			cell.open(_);
-		}
-	}
+void GameModel::openAll() {
+    bool _ = false;
+    for (auto& row : *_map) {
+        for (auto& cell : row) {
+            cell.open(_);
+        }
+    }
 }
 
 static inline CellInfo getCellInfo(const IMap& map, const Coordinate& coord) {
@@ -164,5 +145,3 @@ static inline CellInfo getCellInfo(const IMap& map, const Coordinate& coord) {
 
     return CellInfo{count};
 }
-
-
