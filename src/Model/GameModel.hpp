@@ -15,6 +15,7 @@ public:
     const TCellMatrix& getCellGrid() const override;
     GameState getGameState() const override;
     bool checkIsWin() const override;
+
 private:
     GameState _state;
     std::unique_ptr<TCellMatrix> _map;
@@ -24,6 +25,7 @@ private:
     void markCell(int x, int y);
     void unmarkCell(int x, int y);
     void setGameState(GameState state);
+	void openAll();
     void exitGame();
     bool isEndGame() const;
 };

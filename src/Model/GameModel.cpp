@@ -16,16 +16,26 @@ void GameModel::executeCommand(Command cmd) {
     }
 
     switch (cmd.type) {
-    case CommandType::OPEN:openCell(cmd.x, cmd.y);
+    case CommandType::OPEN:
+		openCell(cmd.x, cmd.y);
         break;
-    case CommandType::MARK:markCell(cmd.x, cmd.y);
+    case CommandType::MARK:
+		markCell(cmd.x, cmd.y);
         break;
-    case CommandType::UNMARK:unmarkCell(cmd.x, cmd.y);
+    case CommandType::UNMARK:
+		unmarkCell(cmd.x, cmd.y);
         break;
-    case CommandType::EXIT:exitGame();
+    case CommandType::EXIT:
+		exitGame();
         break;
-    default:break;
+    default:
+		break;
     }
+
+	if (isEndGame())
+	{
+		openAll();
+	}
 }
 
 const IGameModel::TCellMatrix& GameModel::getCellGrid() const {
@@ -37,8 +47,24 @@ GameState GameModel::getGameState() const {
 }
 
 bool GameModel::checkIsWin() const {
-    return false;
+	bool isMine = false;
+	bool allClosedIsMines = true;
+
+	// if on cell contains no mine - `allClosedIsMines` turns to false
+	for (auto& row : *_map)
+	{
+		for (auto& cell : row)
+		{
+			if (!cell.isOpened(isMine))
+			{
+				allClosedIsMines &= isMine;
+			}
+		}
+	}
+
+	return allClosedIsMines;
 }
+
 
 std::unique_ptr<IGameModel::TCellMatrix> GameModel::loadMap(const IMap& map) const {
     int width = map.getWidth();
@@ -68,7 +94,11 @@ void GameModel::openCell(int x, int y) {
         }
         if (isMine) {
             setGameState(GameState::LOSE);
-        } else {
+        } else if (checkIsWin())
+		{
+			setGameState(GameState::WIN);
+		} else
+		{
             setGameState(GameState::GAME);
         }
     }
@@ -104,6 +134,19 @@ bool GameModel::isEndGame() const {
 
 void GameModel::setGameState(GameState state) {
     _state = state;
+}
+
+
+void GameModel::openAll()
+{
+	bool _ = false;
+	for (auto& row : *_map)
+	{
+		for (auto& cell : row)
+		{
+			cell.open(_);
+		}
+	}
 }
 
 static inline CellInfo getCellInfo(const IMap& map, const Coordinate& coord) {
