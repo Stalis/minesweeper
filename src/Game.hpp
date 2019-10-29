@@ -6,8 +6,8 @@
 
 #include "View/IGameView.hpp"
 #include "Map/Map.hpp"
-#include "ViewModel/IGameViewModel.hpp"
 #include <memory>
+#include <src/Model/IGameModel.hpp>
 
 struct GameSettings {
     int width = 8;
@@ -25,7 +25,7 @@ public:
     ~Game();
 private:
     std::shared_ptr<IGameView> _view;
-    std::shared_ptr<IGameViewModel> _viewModel;
+    std::shared_ptr<IGameModel> _model;
     std::shared_ptr<IMap> _map;
     GameSettings _settings;
     mutable GameState _state;

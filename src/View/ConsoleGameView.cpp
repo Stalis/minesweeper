@@ -4,6 +4,7 @@
 
 #include "ConsoleGameView.hpp"
 #include <iostream>
+#include <utility>
 #include <vector>
 #include <string>
 #include <sstream>
@@ -15,24 +16,30 @@ static void printHeader(int count, char delimiter);
 static bool readColumnNumber(const std::string& name, int& number);
 static bool readColumnName(int number, std::string& name);
 
-static const ConsoleCommandReader::TConverter tConverterRef{readColumnNumber};
-inline static const ConsoleGameViewSettings defaultSettings = ConsoleGameViewSettings{};
+constexpr inline static const ConsoleGameViewSettings defaultSettings = ConsoleGameViewSettings{};
 
 static const std::string HeaderAlphabet{"abcdefghjklmnopqrstuvwxyz"};
 
-ConsoleGameView::ConsoleGameView(std::shared_ptr<IGameViewModel> viewModel)
-    : ConsoleGameView(viewModel, defaultSettings) {}
+ConsoleGameView::ConsoleGameView(std::shared_ptr<IGameModel> model)
+    : ConsoleGameView(std::move(model), defaultSettings) {}
 
-ConsoleGameView::ConsoleGameView(std::shared_ptr<IGameViewModel> viewModel, const ConsoleGameViewSettings& settings)
-    : _settings(settings), _gridView(std::map<Coordinate, char>{}), _viewModel(std::move(viewModel)),
-      _commandCallback(nullptr),
-      _commandReader(std::make_unique<ConsoleCommandReader>(tConverterRef)) {}
+ConsoleGameView::ConsoleGameView(std::shared_ptr<IGameModel> model, const ConsoleGameViewSettings& settings)
+    : ConsoleGameView(std::move(model), std::make_unique<TextCommandController>(readColumnNumber)) {}
+
+ConsoleGameView::ConsoleGameView(std::shared_ptr<IGameModel> model, std::unique_ptr<TextCommandController> controller)
+    : ConsoleGameView(std::move(model), std::move(controller), defaultSettings) {}
+
+ConsoleGameView::ConsoleGameView(std::shared_ptr<IGameModel> model,
+                                 std::unique_ptr<TextCommandController> controller,
+                                 const ConsoleGameViewSettings& settings)
+    : _settings(settings), _gridView(std::map<Coordinate, char>{}), _model(std::move(model)), _commandCallback(nullptr),
+      _controller(std::move(controller)) {}
 
 void ConsoleGameView::draw()
 {
 	Utils::clear_screen();
 
-    switch (_viewModel->getGameState()) {
+    switch (_model->getGameState()) {
     case GameState::GAME:
 		drawGameScreen();
         break;
@@ -56,20 +63,11 @@ void ConsoleGameView::setCommandCallback(IGameView::TCommandCallback* callback) 
 
 Command ConsoleGameView::waitInput()
 {
-	std::string input{};
-	std::getline(std::cin, input);
-    auto cmd = _commandReader->convertToCommand(input);
-//    std::cin.get();
+    auto cmd = _controller->waitInput();
     if (nullptr != _commandCallback) {
         (*_commandCallback)(cmd);
     }
     return cmd;
-}
-
-void ConsoleGameView::toLoseScreen() {
-}
-
-void ConsoleGameView::toWinScreen() {
 }
 
 void ConsoleGameView::drawWinScreen() {
@@ -90,7 +88,7 @@ void ConsoleGameView::drawGameScreen() {
 
 void ConsoleGameView::drawMap()
 {
-	auto& grid = _viewModel->getCellGrid();
+    auto& grid = _model->getCellGrid();
 	std::cout << _settings.delimiter << _settings.delimiter << _settings.headerColor << std::flush;
 	printHeader(grid.size(), _settings.delimiter);
 	std::cout << _settings.resetColor << std::endl;
@@ -143,6 +141,10 @@ void ConsoleGameView::putCellChar(const CellInfo& info) {
     }
 
     std::cout << colorSwitch << ch << resetSwitch << std::flush;
+}
+
+const IController& ConsoleGameView::getController() const {
+    return *_controller;
 }
 
 static void printHeader(int count, char delimiter) {

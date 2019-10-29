@@ -6,11 +6,11 @@
 #include <map>
 #include <string>
 #include <functional>
+#include <src/Controller/TextCommandController.hpp>
+#include <src/Model/IGameModel.hpp>
 #include "IGameView.hpp"
 #include "src/Map/Coordinate.hpp"
-#include "src/ViewModel/IGameViewModel.hpp"
 #include "ConsoleColors.hpp"
-#include "ConsoleCommandReader.hpp"
 
 struct ConsoleGameViewSettings {
     const char mineCell = '*';
@@ -29,21 +29,24 @@ struct ConsoleGameViewSettings {
 
 class ConsoleGameView : public IGameView {
 public:
-    explicit ConsoleGameView(std::shared_ptr<IGameViewModel> viewModel);
-    ConsoleGameView(std::shared_ptr<IGameViewModel> viewModel, const ConsoleGameViewSettings& settings);
+    explicit ConsoleGameView(std::shared_ptr<IGameModel> model);
+    ConsoleGameView(std::shared_ptr<IGameModel>, const ConsoleGameViewSettings&);
+    ConsoleGameView(std::shared_ptr<IGameModel>, std::unique_ptr<TextCommandController>);
+    ConsoleGameView(std::shared_ptr<IGameModel>,
+                    std::unique_ptr<TextCommandController>,
+                    const ConsoleGameViewSettings&);
     ~ConsoleGameView() override = default;
 
     void draw() override;
     void setCommandCallback(TCommandCallback* callback) override;
+    const IController& getController() const override;
     Command waitInput() override;
-    void toWinScreen() override;
-    void toLoseScreen() override;
 private:
     ConsoleGameViewSettings _settings;
     std::map<Coordinate, char> _gridView;
-    std::shared_ptr<IGameViewModel> _viewModel;
+    std::shared_ptr<IGameModel> _model;
     TCommandCallback* _commandCallback;
-    std::unique_ptr<ConsoleCommandReader> _commandReader;
+    std::unique_ptr<TextCommandController> _controller;
 
     void drawWinScreen();
     void drawLoseScreen();

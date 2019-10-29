@@ -6,13 +6,8 @@
 
 #include "src/Vector2.hpp"
 #include "src/Command.hpp"
+#include "src/Controller/IController.hpp"
 #include <functional>
-
-enum class CellMode {
-    CLOSED,
-    EMPTY,
-    MINE,
-};
 
 class IGameView {
 public:
@@ -23,6 +18,5 @@ public:
     virtual void draw() = 0;
     virtual void setCommandCallback(TCommandCallback* callback) = 0;
 	virtual Command waitInput() = 0;
-    virtual void toWinScreen() = 0;
-    virtual void toLoseScreen() = 0;
+    virtual const IController& getController() const = 0;
 };

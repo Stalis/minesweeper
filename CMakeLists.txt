@@ -21,16 +21,18 @@ set(SOURCES
         src/View/ConsoleColors.hpp
         src/View/ConsoleGameView.cpp src/View/ConsoleGameView.hpp
 
-        src/ViewModel/IGameViewModel.hpp
-        src/ViewModel/CellInfo.hpp
-        src/ViewModel/GameViewModel.cpp src/ViewModel/GameViewModel.hpp
-
+        src/Model/CellInfo.hpp
         src/Game.cpp src/Game.hpp
         src/Command.hpp src/Command.cpp
         src/Vector2.hpp
         src/GameState.hpp
         src/Utils.hpp
-        src/View/ConsoleCommandReader.cpp src/View/ConsoleCommandReader.hpp)
+
+        src/Model/IGameModel.hpp
+        src/Model/GameModel.cpp src/Model/GameModel.hpp
+
+        src/Controller/IController.hpp
+        src/Controller/TextCommandController.cpp src/Controller/TextCommandController.hpp)
 
 if (WITH_CURSES)
     set(SOURCES
